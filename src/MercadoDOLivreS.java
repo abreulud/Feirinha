@@ -71,13 +71,13 @@ class Avaliacao {
     }
 }
 
-public class MercadoLivre {
+public class MercadoDOLivreS {
     private LinkedList<Cliente> clientes;
     private Stack<Produto> produtos;
     private TreeSet<String> compras;
     private Queue<Avaliacao> avaliacoes;
 
-    public MercadoLivre() {
+    public MercadoDOLivreS() {
         clientes = new LinkedList<>();
         produtos = new Stack<>();
         compras = new TreeSet<>();
@@ -181,7 +181,7 @@ public class MercadoLivre {
     }
 
     public static void main(String[] args) {
-        MercadoLivre mercadoLivre = new MercadoLivre();
+        MercadoDOLivreS mercadoLivre = new MercadoDOLivreS();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
