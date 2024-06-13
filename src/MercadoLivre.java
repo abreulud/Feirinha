@@ -6,11 +6,11 @@ import java.util.TreeSet;
 
 class Cliente {
     private String nome;
-    private String tipo; // "consumidor" ou "vendedor"
+    private String tipo; // "consumidor" ou "vendedor"...
     private String login;
     private String senha;
 
-    public Cliente(String nome, String tipo, String login, String senha) {
+    public Cliente(String nome, String tipo, String login, String senha) { //essas classes iremos usar em cadastro de produtos e de vendedores/consumidores
         this.nome = nome;
         this.tipo = tipo;
         this.login = login;
@@ -25,13 +25,21 @@ class Cliente {
         return tipo;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     public boolean verificarLogin(String login, String senha) {
-        if (this.tipo.equals("vendedor") && this.login.equals(login) && this.senha.equals(senha)) {
+        if (this.tipo.equals("vendedor") && this.login.equals(login) && this.senha.equals(senha)) { //aqui iremos usar em cadastro de produtos onde vai identificar o login do vendedor
             return true;
         } else {
             System.out.println("Apenas vendedores podem inserir produtos");
             return false;
         }
+    }
+
+    public boolean validarSenha(String senhaInformada) {
+        return this.senha.equals(senhaInformada);
     }
 }
 
@@ -71,20 +79,55 @@ class Avaliacao {
     }
 }
 
-public class MercadoDOLivreS {
+public class MercadoLivre {
     private LinkedList<Cliente> clientes;
     private Stack<Produto> produtos;
     private TreeSet<String> compras;
     private Queue<Avaliacao> avaliacoes;
+    private Cliente clienteLogado;
 
-    public MercadoDOLivreS() {
+    public MercadoLivre() {
         clientes = new LinkedList<>();
         produtos = new Stack<>();
         compras = new TreeSet<>();
         avaliacoes = new LinkedList<>();
     }
 
-    public void cadastrarCliente() {
+    public Cliente login(String login, String senha) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getLogin().equals(login) && cliente.validarSenha(senha)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
+
+    public void efetivarCompra() {
+        if (clienteLogado == null || !clienteLogado.getTipo().equals("consumidor")) {
+            System.out.println("Você precisa estar logado como consumidor para efetuar uma compra.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do produto: ");
+        String nomeProduto = scanner.nextLine();
+        Produto produto = null;
+        for (Produto p : produtos) {
+            if (p.getNome().equals(nomeProduto)) {
+                produto = p;
+                break;
+            }
+        }
+        if (produto == null) {
+            System.out.println("Produto não encontrado.");
+            return;
+        }
+
+        compras.add(clienteLogado.getNome() + " comprou " + produto.getNome());
+        System.out.println("Compra efetivada com sucesso!");
+    }
+
+    public void cadastrarCliente() { //processo de cadastramento de vendedor/consumidor
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do cliente: ");
         String nome = scanner.nextLine();
@@ -99,7 +142,7 @@ public class MercadoDOLivreS {
         System.out.println("Cliente cadastrado com sucesso!");
     }
 
-    public void cadastrarProduto() {
+    public void cadastrarProduto() { //Essa classe vai identificar o vendedor, caso seja um consumidor ou nao exista nenhum nome cadastrado ele não irá identificar ambos
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do cliente: ");
         String nome = scanner.nextLine();
@@ -130,20 +173,10 @@ public class MercadoDOLivreS {
         String nomeProduto = scanner.nextLine();
         System.out.print("Digite o preco do produto: ");
         double preco = scanner.nextDouble();
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextDouble()
+        scanner.nextLine();
         Produto produto = new Produto(nomeProduto, preco);
         produtos.push(produto);
         System.out.println("Produto cadastrado com sucesso!");
-    }
-
-    public void efetivarCompra() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite o nome do consumidor: ");
-        String consumidor = scanner.nextLine();
-        System.out.print("Digite o nome do produto: ");
-        String produto = scanner.nextLine();
-        compras.add(consumidor + " comprou " + produto);
-        System.out.println("Compra efetivada com sucesso!");
     }
 
     public void avaliarVendedor() {
@@ -152,7 +185,7 @@ public class MercadoDOLivreS {
         String vendedor = scanner.nextLine();
         System.out.print("Digite a nota do vendedor (0-10): ");
         int nota = scanner.nextInt();
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextInt()
+        scanner.nextLine();
         Avaliacao avaliacao = new Avaliacao(vendedor, nota);
         avaliacoes.add(avaliacao);
         System.out.println("Avaliação realizada com sucesso!");
@@ -180,8 +213,8 @@ public class MercadoDOLivreS {
         }
     }
 
-    public static void main(String[] args) {
-        MercadoDOLivreS mercadoLivre = new MercadoDOLivreS();
+    public static void main(String[] args) { //execução principal do sistema
+        MercadoLivre mercadoLivre = new MercadoLivre();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -191,10 +224,11 @@ public class MercadoDOLivreS {
             System.out.println("3. Efetivar compra");
             System.out.println("4. Avaliar vendedor");
             System.out.println("5. Imprimir relatório");
-            System.out.println("6. Sair do sistema");
+            System.out.println("6. Login");
+            System.out.println("7. Sair do sistema");
             System.out.print("Digite a opção desejada: ");
             int opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha deixada pelo nextInt()
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -213,6 +247,19 @@ public class MercadoDOLivreS {
                     mercadoLivre.imprimirRelatorio();
                     break;
                 case 6:
+                    System.out.print("Digite o login: ");
+                    String login = scanner.nextLine();
+                    System.out.print("Digite a senha: ");
+                    String senha = scanner.nextLine();
+                    Cliente cliente = mercadoLivre.login(login, senha);
+                    if (cliente != null) {
+                        mercadoLivre.clienteLogado = cliente;
+                        System.out.println("Login realizado com sucesso!");
+                    } else {
+                        System.out.println("Login ou senha incorretos.");
+                    }
+                    break;
+                case 7:
                     System.out.println("Saindo do sistema...");
                     return;
                 default:
