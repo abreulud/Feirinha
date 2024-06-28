@@ -13,10 +13,7 @@ Após o recebimento do produto o consumidor deve entrar no sistema e fazer uma a
 * A Compra foi armazenada dentro de uma **Árvore**.
 * A Avaliação foi incluída dentro de uma **Fila**.
 
-
-
-
->**Trabalho em Equipe** \
->Disciplina: Estrutura de Dados \
->Linguagem: Java \
->Curso: Ciência da Computação / 3º Semestre
+>✔️**Trabalho em Equipe**\
+> Disciplina: Estrutura de Dados \
+> Linguagem: Java \
+> Curso: Ciência da Computação / 3º Semestre
