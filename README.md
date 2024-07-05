@@ -1,4 +1,4 @@
-# Projeto Feirinha
+# Projeto Feirinha <img align="center" alt="Linne-java" height="30" width="40" img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" />
 
 
 ## Proposta:
