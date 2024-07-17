@@ -11,7 +11,7 @@ Após o recebimento do produto o consumidor deve entrar no sistema e fazer uma a
 * O Cadastro de Clientes deve foi feito através de um **Lista Duplamente Encadeada**.
 * O Produto foi feito através de uma **Pilha**.
 * A Compra foi armazenada dentro de uma **Árvore**.
-* A Avaliação foi incluída dentro de uma **Fila**.
+* A Avaliação foi incluída dentro de uma **Fila**
 
 >✔️**Trabalho em Equipe**\
 > Disciplina: Estrutura de Dados \
